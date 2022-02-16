@@ -1,0 +1,166 @@
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+
+{% block body %}
+    <!-- bradcam_area  -->
+    <div class="bradcam_area bradcam_bg_1">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-12">
+                    <div class="bradcam_text">
+                        <h3></h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--/ bradcam_area  -->
+
+    <div class="job_details_area">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="job_details_header">
+                        <div class="single_jobs white-bg d-flex justify-content-between">
+                            <div class="jobs_left d-flex align-items-center">
+                                <div class="">
+                                    <img src="{{orders.image.url}}"  width=100px style="margin-right:20px" alt="">
+                                </div>
+                                <div class="jobs_conetent">
+                                    <a href="#"><h4>{{orders.name}}</h4></a>
+                                    <div class="links_locat d-flex align-items-center">
+
+                                        <div class="location">
+                                            <p> <i class=""></i>{{orders.address}}</p>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="jobs_right">
+                                <div class="" style="">
+                                    <div class="apply_now " style="padding-top:5px "  >
+                                        <a class="boxed-btn3" style="font-size:18px;" href="{% url 'order:make_order_done' orders.id%}" style="margin:5px; width:10%">تم</a>
+                                        <a class="boxed-btn3" style="font-size:18px" href="{% url 'order:order_back' orders.id%}">تراجع</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="descript_wrap white-bg">
+                        <div class="single_wrap">
+                            <h1>Product</h1>
+
+                            {% comment %} <div class="location">
+                                <p> <i class=""></i>{{ord.title}} : {{ord.price}} ل.س</p>
+                            </div> {% endcomment %}
+
+                            <div class="jobs_left d-flex align-items-center row"style="margin-bottom:30px">
+
+                                {% for ord in order %}
+
+                           {% if ord.id == orders.id_products %}
+
+                                    <div class="">
+                                        <img src="{{ord.image.url}}"  width=200px style="margin:10px" alt="">
+                                    </div>
+
+                                    <div class="jobs_conetent " style="margin-right:50px">
+                                        <a href=""><h2 style="margin-top:-50px">{{ord.title}}</h2></a>
+                                        <div class="links_locat d-flex align-items-center">
+                                            <div class="location">
+                                                <p style="margin-top:40px; font-size:18px"> <i class=""></i>سعر القطعة: {{ord.price}} ل.س</p>
+                                                <p style="font-size:18px;margin-left:100px"> <i class=""></i>الكمية: {{orders.quantity}}</p>
+                                            </div>        
+                      
+                                        </div>
+                                    </div>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+
+                            <p></p>
+                        </div>
+   
+                    </div>
+                    {% comment %} <div class="apply_job_form white-bg">
+                        <h4>Apply for the job</h4>
+                        <form method="POST" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            {% bootstrap_form form %} 
+                            {% buttons %}
+                                 <button class="boxed-btn3 w-100" type="submit">Apply Now</button>
+                            {% endbuttons %}     
+
+                        </form>
+                    </div> {% endcomment %}
+                </div>
+                <div class="col-lg-4">
+                    {% comment %} <div class="job_sumary">
+                        <div class="summery_header">
+                            <h3>Job Summery</h3>
+                        </div>
+                        <div class="job_content">
+                            <ul>
+                                <li>Published on: <span>{{job.published_at|date:'d M o'}}</span></li>
+                                <li>Vacancy: <span>{{job.vacancy}} Position</span></li>
+                                <li>Salary: <span>{{job.salary}}</span></li>
+                                <li>Location: <span>California, USA</span></li>
+                                <li>Job Nature: <span>{{job.job_type}}</span></li>
+                            </ul>
+                        </div>
+                    </div> {% endcomment %}
+                    {% comment %} <div class="share_wrap d-flex">
+                        <span>Share at:</span>
+                        <ul>
+                            <li><a href="#"> <i class="fa fa-facebook"></i></a> </li>
+                            <li><a href="#"> <i class="fa fa-google-plus"></i></a> </li>
+                            <li><a href="#"> <i class="fa fa-twitter"></i></a> </li>
+                            <li><a href="#"> <i class="fa fa-envelope"></i></a> </li>
+                        </ul>
+                    </div> {% endcomment %}
+                    <div class="job_location_wrap">
+                        <div class="job_lok_inner">
+                            <div id="map" style="height: 338px;"></div>
+                            <script>
+                              function initMap() {
+                                var uluru = {lat: -25.363, lng: 131.044};
+                                var grayStyles = [
+                                  {
+                                    featureType: "all",
+                                    stylers: [
+                                      { saturation: -90 },
+                                      { lightness: 50 }
+                                    ]
+                                  },
+                                  {elementType: 'labels.text.fill', stylers: [{color: '#ccdee9'}]}
+                                ];
+                                var map = new google.maps.Map(document.getElementById('map'), {
+                                  center: { lat: {{orders.locx}}, lng : {{orders.locy}}},
+                                  zoom: 15,
+                                  styles: grayStyles,
+                                  scrollwheel:  false
+                                });
+
+                                var marker = new google.maps.Marker({
+                                    position:{ lat: {{orders.locx}}, lng : {{orders.locy}}},
+                                    title: 'cust',
+                                    map : map,
+                                })
+                              }
+                              
+                            </script>
+                            <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDpfS1oRGreGSBU5HHjMmQ3o5NLw7VdJ6I&callback=initMap"></script>
+                            
+                             
+                          </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock body %}
+
+
+

@@ -1,0 +1,158 @@
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+{% load static %}
+{% block body %}
+    <!-- bradcam_area  -->
+    <div class="bradcam_area bradcam_bg_1">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-12">
+                    <div class="bradcam_text">
+                        <h3>Shop App</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--/ bradcam_area  -->
+
+    <!-- job_listing_area_start  -->
+
+    <div class="pos-f-t job_listing_area">
+        <nav class="navbar navbar-dark">
+            <button class="navbar-toggler boxed-btn3 " type="button" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
+             <span  class="navbar-toggler-icon" style="margin-left:-10px;"></span><span style="margin-left:10px;font-size:18px;">Add Product</span>
+            </button>
+          </nav>
+        <div class="collapse" id="navbarToggleExternalContent">
+          <div class="p-4">
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                {% bootstrap_form proform %} 
+                {% buttons %}
+                     <button class="boxed-btn3 w-100" type="submit">Post Now</button>
+                {% endbuttons %}     
+            </form>
+          </div>
+        </div>
+
+    </div>
+    <div class="job_listing_area plus_padding mx-auto"  style="margin-top:0px; padding-top:0px">
+        
+
+
+        <div class="container">
+            <div class="row ">
+                <div class="col-lg-3" style="margin-bottom:0px;">
+                    <div class="job_filter white-bg" style="margin-bottom:0px;padding-bottom:10px">
+                        <div class="form_inner white-bg" style="margin-bottom:00px;padding-bottom:10px">
+                            <h3>Filter</h3>
+                            <form method = "GET">
+
+                                {% bootstrap_form myfilter.form %} 
+                                <input type = "submit" value = "Sreath" class = "boxed-btn3 w-100 mt-2">
+                            </form>
+                        </div>
+
+
+                    </div>
+                </div>
+                <div class="col-lg-9 ">
+                    <div class="recent_joblist_wrap">
+                        <div class="recent_joblist white-bg" style="width:738px">
+                            <div class="row align-items-center">
+                                <div class="col-md-5 ">
+                                    <h4>Products</h4>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="job_lists m-0" style="padding-top:0px">
+                        <div class="row">
+                        {% for pro in products %}
+                            {% if pro.hide == True %}
+                            <div class="col-lg-5 col-md-5" style="margin-right:-100px;">
+                                <div style="margin-right:100px;height:375px" class="single_jobs white-bg d-flex justify-content-between">
+                                    <div class="jobs_left d-flex align-items-center" style="margin-top: -100px;">
+                                       
+                                        <div class="jobs_conetent" style ="margin-top :40px;margin-left:-30px">
+                                            <a href="{% url 'products:product_details' pro.id %}"><h3 class ="ctr_h" style = "text-align:left ; padding-top :0px; ">{{pro.title}} </h3> <p style="margin-left:-30px">Price: {{pro.price}} S.B </p></a>
+                                            <div class="links_locat d-flex align-items-center">
+                                            
+                                                    <img src="{{pro.image.url}}"  style="margin-left:-50px; text-align:center;width:175px;height:200px" class ="contener" alt="">
+                                            
+                                                                           
+                                            </div>
+                                        </div>
+
+                                        <div class="apply_now">
+                                            <a style ="margin-left:-150px ; margin-top :200px" href="#" class="heart-mark" ><i class=""></i> </a>
+
+                                            <a  style ="margin-left:-32px ; margin-top :380px" href="{% url 'products:update_product' pro.id %}"  class="boxed-btn3 ">Edit</a>
+
+                                           <a style ="margin-left:5px ; margin-top :350px"  href="{% url 'products:delete_product' pro.id %}" class="boxed-btn3">Delete</a>
+
+                                        </div>
+
+                                        {% comment %} <div class="date">
+                                            <p>Date Line: </p>
+                                        </div> {% endcomment %}
+                                    
+                                    </div>
+                                </div>
+                            </div>
+                            {% endif %}
+                         {% endfor %}
+
+                    
+                        </div>
+
+                        
+                        {% if products.has_other_pages %}
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="pagination_wrap">
+                                        <ul>
+                                        {% if products.has_previous %}
+                                            <li><a href="?page={{products.previous_page_number}}"> <i class="ti-angle-left"></i> </a></li>
+                                        {% endif %}
+
+                                        {% for i in products.paginator.page_range %}
+                                            <li><a href="?page={{i}}"><span>{{i}}</span></a></li>
+                                        {% endfor %}
+
+                                        {% if products.has_next %}
+                                            <li><a href="?page={{products.next_page_number}}"> <i class="ti-angle-right"></i> </a></li>
+                                        {% endif %}
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+                {% comment %} <div class="col-lg-3 job_details_area " style="padding-top:0px">
+
+                    <div style ="width :250px;margin-top:-1050px;padding-top:0px"class="job_sumary">
+                        <div class="summery_header">
+                            <h3>Add Product</h3>
+                        </div>
+                        <div class="job_content">
+                            <form method="POST" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                {% bootstrap_form proform %} 
+                                {% buttons %}
+                                     <button class="boxed-btn3 w-100" type="submit">Post Now</button>
+                                {% endbuttons %}     
+                            </form>
+                        </div>
+                    </div>
+                </div> {% endcomment %}
+
+            </div>
+        </div>
+    </div>
+    <!-- job_listing_area_end  -->
+{% endblock body %}
